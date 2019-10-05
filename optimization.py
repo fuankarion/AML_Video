@@ -22,15 +22,14 @@ def train_phase(net, device, data_loader, optimizer, criterion):
     loss_ra = runningAverages()
     net.train()
     for iter_idx, data in enumerate(data_loader):
-        s0, s1, s2, target = data
+        s0, s1, target = data
         s0 = s0.to(device, dtype=torch.float)
         s1 = s1.to(device, dtype=torch.float)
-        s2 = s2.to(device, dtype=torch.float)
         target = target.to(device, dtype=torch.long)
 
         with torch.set_grad_enabled(True):
             optimizer.zero_grad()
-            output = net(s0, s1, s2)
+            output = net(s0, s1)
             loss = criterion(output, target)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(net.parameters(), 0.5)
@@ -49,14 +48,13 @@ def test_phase(net, device, data_loader, criterion):
     net.eval()
 
     for iter_idx, data in enumerate(data_loader):
-        s0, s1, s2, target = data
+        s0, s1, target = data
         s0 = s0.to(device, dtype=torch.float)
         s1 = s1.to(device, dtype=torch.float)
-        s2 = s2.to(device, dtype=torch.float)
         target = target.to(device, dtype=torch.long)
 
         with torch.set_grad_enabled(False):
-            output = net(s0, s1, s2)
+            output = net(s0, s1)
             loss = criterion(output, target)
 
         #Accuracy

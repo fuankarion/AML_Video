@@ -26,7 +26,7 @@ class VideoDataset(data.Dataset):
         self.transform = transform
         self.classez = classes
         self.keys = []
-        self.segments = 3
+        self.segments = 2
 
         #Load Meta_data
         for cls in self.classez:
@@ -56,10 +56,28 @@ class VideoDataset(data.Dataset):
 
         frame_0 = random.randint(ls[0], ls[1])
         frame_1 = random.randint(ls[1], ls[2])
-        frame_2 = random.randint(ls[2], ls[3])
 
         img0 = self.transform(self._pil_loader(jpg_files[frame_0]))
         img1 = self.transform(self._pil_loader(jpg_files[frame_1]))
-        img2 = self.transform(self._pil_loader(jpg_files[frame_2]))
 
-        return img0, img1, img2, self.classez.index(cls)
+        return img0, img1, self.classez.index(cls)
+
+
+class VideoDatasetVal(VideoDataset):
+    def __len__(self):
+        return len(self.keys)*10
+
+    def __getitem__(self, idx):
+        video, cls = self.keys[idx%len(self.keys)]
+        selector = os.path.join(self.source, cls, video, '*.jpg')
+        jpg_files = glob.glob(selector)
+        ls = np.linspace(0, len(jpg_files)-1, num=self.segments+1)
+        ls = ls.astype(int)
+
+        frame_0 = random.randint(ls[0], ls[1])
+        frame_1 = random.randint(ls[1], ls[2])
+
+        img0 = self.transform(self._pil_loader(jpg_files[frame_0]))
+        img1 = self.transform(self._pil_loader(jpg_files[frame_1]))
+
+        return img0, img1, self.classez.index(cls)

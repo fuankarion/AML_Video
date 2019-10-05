@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from net import resnet_tsn
 from optimization import train_phase, test_phase
-from datasets import VideoDataset, transform_train, transform_val
+from datasets import VideoDataset, VideoDatasetVal, transform_train, transform_val
 
 classez = ['Archery', 'BalanceBeam', 'BaseballPitch', 'BenchPress', 'Biking',
 'Bowling', 'Fencing', 'HammerThrow', 'HighJump', 'JavelinThrow', 'Kayaking',
@@ -16,7 +16,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=40, gamma=0.1)
 
 train_set = VideoDataset('/home/jcleon/tmp/train', transform_train, classez)
-val_set = VideoDataset('/home/jcleon/tmp/val', transform_val, classez)
+val_set = VideoDatasetVal('/home/jcleon/tmp/val', transform_val, classez)
 
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=24, shuffle=True,
                                           num_workers=4)

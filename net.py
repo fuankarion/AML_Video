@@ -194,12 +194,11 @@ class TSNNet(nn.Module):
 
         return x
 
-    def forward(self, s1, s2, s3):
+    def forward(self, s1, s2,):
         s1 = self.forward_segment(s1)
         s2 = self.forward_segment(s2)
-        s3 = self.forward_segment(s3)
 
-        s = torch.stack((s1, s2, s3))
+        s = torch.stack((s1, s2))
         s = s.permute(1, 2, 0, 3, 4)
         s = self.avgpool(s)
         s = torch.flatten(s, 1)
