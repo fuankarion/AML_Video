@@ -18,6 +18,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=40, gamma=0.1)
 
 # Set up datasets and pytorch loaders, adjust batchsize for your GPU, now it uses about 2.1 GB
+# Tweak CPU usage here
 train_set = VideoDataset('/home/jcleon/tmp/train', transform_train, classez)
 val_set = VideoDatasetVal('/home/jcleon/tmp/val', transform_val, classez)
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=24, shuffle=True,
