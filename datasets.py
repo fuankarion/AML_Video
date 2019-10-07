@@ -65,7 +65,7 @@ class VideoDataset(data.Dataset):
         return img0, img1, self.classez.index(cls)
 
 
-# Quick and dirty fix, since TSN sampling is sparse repeat evauation set 10 times, dont be like me ;)
+# Quick and dirty fix, since TSN sampling is sparse repeat evauation set 10 times, don't be like me ;)
 class VideoDatasetVal(VideoDataset):
     def __len__(self):
         return len(self.keys)*10
