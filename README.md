@@ -4,7 +4,7 @@
 1. Explain why you consider that these strategies would improve the performance of the baseline TSN (do not confuse TSN -code provided here- with TSM -final paper presented-).
 1. Implement the strategies you chose and discuss your results
 
-It is probably easier to implement and analyse each strategy independently. 
+Tip: It is probably easier to implement and analyse each strategy independently. 
 
 **Bonus:** Implement both the non-local block or the TSM module in the forward function and discuss your results
 
