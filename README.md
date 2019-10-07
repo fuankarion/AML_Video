@@ -1,4 +1,10 @@
-# AML_Video
+# AML Video
+### Running TSN Demo
+Make sure you fix the path to the dataset train and val direcories, then run 
+
+```
+python TSN.py
+```
 
 ### Mini UCF-101 Dataset (20 Classes)
 Just download and untar:
