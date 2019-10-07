@@ -9,13 +9,6 @@ Tip: It is probably easier to implement and analyse each strategy independently.
 
 **Bonus:** Implement simultaneously the non-local block or the TSM module in the forward function and discuss your results
 
-### Running TSN Demo
-Make sure you fix the path to the dataset train and val directories, then run 
-
-```
-python TSN.py
-```
-
 ### Mini UCF-101 Dataset (20 Classes)
 Just download and untar:
 
@@ -23,3 +16,11 @@ Just download and untar:
 
 [Val Data](https://filedn.com/l0kNCNuXuEq70c3iUHsXxJ7/val.tar) (1.1 GB)
  
+### Running TSN Demo
+Make sure you fix the path to the dataset train and val directories, then run:
+
+```
+python TSN.py
+```
+
+Check slides and in code comments for some extra info on the code.
