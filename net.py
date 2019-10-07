@@ -30,6 +30,7 @@ def conv1x1(in_planes, out_planes, stride=1):
     return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=False)
 
 
+# Block architecture is independet of the temporal summary (NLC/TSM)
 class BasicBlock(nn.Module):
     expansion = 1
 
@@ -70,6 +71,7 @@ class BasicBlock(nn.Module):
         return out
 
 
+# Block architecture is independet of the temporal summary (NLC/TSM)
 class Bottleneck(nn.Module):
     expansion = 4
 
@@ -146,6 +148,7 @@ class TSNNet(nn.Module):
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2,
                                        dilate=replace_stride_with_dilation[2])
 
+        #The dropout is bets at  the final layer for eveery segment
         self.drop_layer = nn.Dropout2d(p=0.8)
         self.avgpool = nn.AdaptiveAvgPool3d((1, 1, 1))
         self.fc_out = nn.Linear(512 * block.expansion, num_classes)
@@ -157,6 +160,7 @@ class TSNNet(nn.Module):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
 
+    # You probaby dont want to modify this
     def _make_layer(self, block, planes, blocks, stride=1, dilate=False):
         norm_layer = self._norm_layer
         downsample = None
@@ -181,6 +185,7 @@ class TSNNet(nn.Module):
 
         return nn.Sequential(*layers)
 
+    # Utility method to perform the forard pass of a single segment
     def forward_segment(self, x):
         x = self.conv1(x)
         x = self.bn1(x)
@@ -192,15 +197,20 @@ class TSNNet(nn.Module):
         x = self.layer3(x)
         x = self.drop_layer(self.layer4(x))
 
+        # You might want to return intermediante states here for the TSM
         return x
 
+    # Actual forward and segmental agregation
     def forward(self, s1, s2,):
         s1 = self.forward_segment(s1)
         s2 = self.forward_segment(s2)
 
+        # Segmental agregation is just a stack and pool operation
         s = torch.stack((s1, s2))
-        s = s.permute(1, 2, 0, 3, 4)
+        s = s.permute(1, 2, 0, 3, 4) # Time,Channel,Batch,W,H
         s = self.avgpool(s)
+
+        # This is standard in a resnet
         s = torch.flatten(s, 1)
         return self.fc_out(s)
 
@@ -217,6 +227,7 @@ def _resnet_tsn(arch, block, layers, pretrained, progress, num_classes, **kwargs
 ######################
 ### ACTUAL NETORKS ###
 ######################
+#Sure you can get a deeper resnet here but that is not the homework
 def resnet_tsn(pretrained=True, progress=True, **kwargs):
     return _resnet_tsn('resnet18', BasicBlock, [2, 2, 2, 2], pretrained,
                        progress, num_classes=20, **kwargs)

@@ -28,7 +28,7 @@ class VideoDataset(data.Dataset):
         self.keys = []
         self.segments = 2
 
-        #Load Meta_data
+        #Load Meta_data [(video_name, class), ...]
         for cls in self.classez:
             videos = os.listdir(os.path.join(self.source, cls))
             for vid in videos:
@@ -54,6 +54,8 @@ class VideoDataset(data.Dataset):
         ls = np.linspace(0, len(jpg_files)-1, num=self.segments+1)
         ls = ls.astype(int)
 
+        # This can be rewriten in a for loop according to the size of self.segments
+        # Written like this for the sake of clarity
         frame_0 = random.randint(ls[0], ls[1])
         frame_1 = random.randint(ls[1], ls[2])
 
@@ -63,6 +65,7 @@ class VideoDataset(data.Dataset):
         return img0, img1, self.classez.index(cls)
 
 
+# Quick and dirty fix, since TSN sampling is sparse repreat evauation set 10 times, dont be like me ;)
 class VideoDatasetVal(VideoDataset):
     def __len__(self):
         return len(self.keys)*10
