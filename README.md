@@ -1,3 +1,4 @@
+
 # AML Video
 ### Homework
 1. Choose two of the strategies presented, explain how they work.
@@ -6,10 +7,10 @@
 
 Tip: It is probably easier to implement and analyse each strategy independently. 
 
-**Bonus:** Implement both the non-local block or the TSM module in the forward function and discuss your results
+**Bonus:** Implement simultaneously the non-local block or the TSM module in the forward function and discuss your results
 
 ### Running TSN Demo
-Make sure you fix the path to the dataset train and val direcories, then run 
+Make sure you fix the path to the dataset train and val directories, then run 
 
 ```
 python TSN.py
